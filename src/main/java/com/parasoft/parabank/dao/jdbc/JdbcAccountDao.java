@@ -142,4 +142,43 @@ public class JdbcAccountDao extends NamedParameterJdbcDaoSupport implements Acco
         // account.getId());
         log.info("Updated information for account with id = " + account.getId());
     }
+
+    //New DELETE API using account id
+    //Note: after talking with Brian, usage of the whole account object
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.dao.AccountDao#deleteAccount(com.parasoft.parabank. domain.Account)
+     */
+    @Override
+    public void deleteAccount(final int id) {
+        final String SQL =
+                "DELETE FROM Account WHERE id = :id";
+
+        final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getAccount(id));
+        getNamedParameterJdbcTemplate().update(SQL, source);
+        // getJdbcTemplate().update(SQL, account.getCustomerId(),
+        // account.getIntType(), account.getBalance(),
+        // account.getId());
+        log.info("Deleted information for account with id = " + id);
+    }
+
+    //DELETE API using customer id, to eliminate all accounts associated with customer id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.dao.AccountDao#deleteAllAccount(com.parasoft.parabank. domain.Account)
+     */
+    /*@Override
+    public void deleteAllAccounts(final int customerId) {
+        final String SQL =
+                "DELETE FROM Account WHERE customer_id = :id";
+
+        final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getAccount(customerId));
+        getNamedParameterJdbcTemplate().update(SQL, source);
+        // getJdbcTemplate().update(SQL, account.getCustomerId(),
+        // account.getIntType(), account.getBalance(),
+        // account.getId());
+        log.info("Deleted Account information for account with customer id = " + customerId);
+    }*/
 }

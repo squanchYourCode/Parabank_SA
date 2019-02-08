@@ -41,4 +41,21 @@ public interface AccountDao {
 	 * @param account the account to update
 	 */
 	void updateAccount(Account account);
+
+	//New DELETE API using account id
+	/**
+	 * Delete stored information for a given account
+	 *
+	 * @param id the account to update
+	 */
+	void deleteAccount(int id);
+
+	//DELETE API to remove all accounts associated with customer
+	//New DELETE API using account id
+	/**
+	 * Delete stored information for a given account
+	 *
+	 * @param id the account to update
+	 */
+	//void deleteAllAccount(int id);
 }

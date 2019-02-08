@@ -126,6 +126,22 @@ public class ParaBankServiceImpl implements ParaBankService, AdminManagerAware, 
         }
     }
 
+    //New Account DELETE API using account id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.service.ParaBankService#getBalance(int)
+     */
+    @Override
+    public void deleteAccount(final int accountId) throws ParaBankServiceException {
+        try {
+            bankManager.deleteAccount(accountId);
+        } catch (final DataAccessException e) {
+            log.error("DataAccessException caught :", e);
+            throw new ParaBankServiceException("Could not find account #" + accountId, e);
+        }
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -165,6 +181,24 @@ public class ParaBankServiceImpl implements ParaBankService, AdminManagerAware, 
     public Customer getCustomer(final int customerId) throws ParaBankServiceException {
         try {
             return bankManager.getCustomer(customerId);
+        } catch (final DataAccessException e) {
+            log.error("DataAccessException caught :", e);
+            throw new ParaBankServiceException("Could not find customer #" + customerId, e);
+        }
+    }
+
+    //New DELETE API with id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.service.ParaBankService#getCustomer(int)
+     */
+    @Override
+    public void deleteCustomer(final int customerId) throws ParaBankServiceException {
+        try {
+            List<Account> account = getAccounts(customerId); // get account object associated with customer_id
+            //bankManager.deleteAccount(account.getId()); //need to delete from Account table before removing from Customer
+            bankManager.deleteCustomer(customerId);
         } catch (final DataAccessException e) {
             log.error("DataAccessException caught :", e);
             throw new ParaBankServiceException("Could not find customer #" + customerId, e);

@@ -15,6 +15,15 @@ public interface CustomerDao {
      */
 	Customer getCustomer(int id);
 
+	//New DELETE API with id
+	/**
+	 * Deletes a specific bank customer by id
+	 *
+	 * @param id the customer id to retrieve
+	 * @return Customer object representing the bank customer
+	 */
+	void deleteCustomer(int id);
+
 	/**
 	 * Retrieve a specific bank customer by username and password
 	 * Used by the login mechanism
@@ -50,4 +59,5 @@ public interface CustomerDao {
 	 * @param customer the customer to update
 	 */
 	void updateCustomer(Customer customer);
+
 }

@@ -142,6 +142,23 @@ public interface ParaBankService extends ParaBankServiceConstants {
         @ApiParam(value = CUSTOMER_ACCOUNT_FETCH_DESC, required = true) @PathParam(ACCOUNT_ID) @WebParam(name = ACCOUNT_ID, targetNamespace = ParaBankServiceConstants.TNS) int accountId)
                 throws ParaBankServiceException;
 
+    //New DELETE API using account id
+    /**
+     * Delete account information for a given account number
+     *
+     * @param accountId
+     *            the account id to lookup
+     * @throws ParaBankServiceException
+     */
+    @DELETE
+    @Path("/accounts/{accountId}")
+    @ApiOperation(value = "DELETE Account by Id", response = Account.class, tags = { ParaBankServiceConstants.ACCOUNTS })
+    @WebResult(name = "account", targetNamespace = ParaBankServiceConstants.TNS)
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    void deleteAccount(
+            @ApiParam(value = CUSTOMER_ACCOUNT_FETCH_DESC, required = true) @PathParam(ACCOUNT_ID) @WebParam(name = ACCOUNT_ID, targetNamespace = ParaBankServiceConstants.TNS) int accountId)
+            throws ParaBankServiceException;
+
     /**
      * Return a list of accounts for a given customer
      *
@@ -177,6 +194,24 @@ public interface ParaBankService extends ParaBankServiceConstants {
     Customer getCustomer(
         @ApiParam(value = CUSTOMER_ID_DESC, required = true) @PathParam(CUSTOMER_ID) @WebParam(name = CUSTOMER_ID, targetNamespace = ParaBankServiceConstants.TNS) int customerId)
                 throws ParaBankServiceException;
+
+    //New DELETE API with customer_id
+    /**
+     * Delete customer information for the given customer number
+     *
+     * @param customerId
+     *            the customer id to lookup
+     * @throws ParaBankServiceException
+     */
+    @DELETE
+    @Path("/customers/{customerId}")
+    @ApiOperation(value = "Deletes Customer Details", response = Customer.class, tags = {
+            ParaBankServiceConstants.CUSTOMERS })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @WebResult(name = "customer", targetNamespace = ParaBankServiceConstants.TNS)
+    void deleteCustomer(
+            @ApiParam(value = CUSTOMER_ID_DESC, required = true) @PathParam(CUSTOMER_ID) @WebParam(name = CUSTOMER_ID, targetNamespace = ParaBankServiceConstants.TNS) int customerId)
+            throws ParaBankServiceException;
 
     /**
      * Return a position for a given position number
