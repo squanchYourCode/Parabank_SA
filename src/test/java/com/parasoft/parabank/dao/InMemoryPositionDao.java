@@ -1,8 +1,11 @@
 package com.parasoft.parabank.dao;
 
-import java.util.*;
+import com.parasoft.parabank.domain.HistoryPoint;
+import com.parasoft.parabank.domain.Position;
 
-import com.parasoft.parabank.domain.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class InMemoryPositionDao implements PositionDao{
     private static int ID = 0;
@@ -77,7 +80,7 @@ public class InMemoryPositionDao implements PositionDao{
         }
         return success;
     }
-
+    //New API
     @Override
     public boolean deletePosition(Position position) {
         boolean success = false;
