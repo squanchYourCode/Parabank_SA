@@ -55,4 +55,15 @@ public class InMemoryAccountDao implements AccountDao {
             }
         }
     }
+
+    //New DELETE API using account id
+    @Override
+    public void deleteAccount(int id) {
+        for (Account existingAccount : accounts) {
+            if (existingAccount.getId() == id) {
+                accounts.remove(existingAccount);
+                break;
+            }
+        }
+    }
 }

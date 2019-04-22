@@ -1,16 +1,20 @@
 package com.parasoft.parabank.dao.jdbc.internal;
 
-import java.sql.*;
-import java.text.*;
-import java.util.*;
+import com.parasoft.parabank.dao.internal.DynamicDataInserter;
+import com.parasoft.parabank.dao.jdbc.JdbcSequenceDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import org.slf4j.*;
-import org.springframework.dao.*;
-import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.core.support.*;
-
-import com.parasoft.parabank.dao.internal.*;
-import com.parasoft.parabank.dao.jdbc.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 public class StockDataInserter extends JdbcDaoSupport implements DynamicDataInserter {
     private static final Logger log = LoggerFactory.getLogger(StockDataInserter.class);
@@ -94,7 +98,7 @@ public class StockDataInserter extends JdbcDaoSupport implements DynamicDataInse
             rows = (nextId - lastId) / JdbcSequenceDao.OFFSET;
             totalRows += rows;
             getJdbcTemplate().update(sql);
-            log.debug("Last {} Stock id = {}, inserted rows/total {}/{}", symbol, nextId, rows, nextId / JdbcSequenceDao.OFFSET);
+            //log.debug("Last {} Stock id = {}, inserted rows/total {}/{}", symbol, nextId, rows, nextId / JdbcSequenceDao.OFFSET);
             lastId = nextId;
             nextId = sequenceDao.setNextId("Stock", nextId); // this will catch up the Sequence
             nextId -= JdbcSequenceDao.OFFSET; // walk one back (we add it back just before insert)

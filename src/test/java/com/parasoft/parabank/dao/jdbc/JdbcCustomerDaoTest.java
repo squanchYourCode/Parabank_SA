@@ -1,15 +1,18 @@
 package com.parasoft.parabank.dao.jdbc;
 
+import com.parasoft.parabank.dao.CustomerDao;
+import com.parasoft.parabank.domain.Address;
+import com.parasoft.parabank.domain.Customer;
+import com.parasoft.parabank.test.util.AbstractParaBankDataSourceTest;
+import org.junit.Test;
+import org.springframework.dao.DataAccessException;
+
+import javax.annotation.Resource;
+
 import static org.junit.Assert.*;
-
-import javax.annotation.*;
-
-import org.junit.*;
-import org.springframework.dao.*;
-
-import com.parasoft.parabank.dao.*;
-import com.parasoft.parabank.domain.*;
-import com.parasoft.parabank.test.util.*;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 /**
  * @req PAR-13
  *
@@ -148,5 +151,33 @@ public class JdbcCustomerDaoTest extends AbstractParaBankDataSourceTest {
         assertFalse(customer == updatedCustomer);
         assertFalse(this.customer.equals(updatedCustomer));
         assertEquals(customer, updatedCustomer);
+    }
+
+    /**
+     * Parasoft Jtest UTA: Helper method to generate and configure mock of JdbcSequenceDao
+     */
+    private static JdbcSequenceDao mockJdbcSequenceDao() throws Throwable {
+        JdbcSequenceDao sequenceDao = mock(JdbcSequenceDao.class);
+        int getNextIdResult = 0; // UTA: default value
+        when(sequenceDao.getNextId(nullable(String.class))).thenReturn(getNextIdResult);
+        return sequenceDao;
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteCustomer(int)
+     *
+     * @author dchacon
+     * @see JdbcCustomerDao#deleteCustomer(int)
+     * still needs some modifications
+     */
+    @Test(expected = NullPointerException.class)
+    public void testDeleteCustomer() throws Throwable {
+        // Given
+        JdbcCustomerDao underTest = new JdbcCustomerDao();
+
+        // When
+        int id = 12434; // UTA: default value
+        underTest.deleteCustomer(id);
+
     }
 }

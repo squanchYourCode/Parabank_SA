@@ -40,6 +40,10 @@ public class JdbcCustomerDao extends NamedParameterJdbcDaoSupport implements Cus
     private final String BASE_QUERY_SQL =
         "SELECT id, first_name, last_name, address, city, state, zip_code, phone_number, ssn, username, password FROM Customer";
 
+    //Base SQL query for deletion
+    private final String BASE_DELETE_QUERY_SQL =
+        "DELETE FROM Customer";
+
     private JdbcSequenceDao sequenceDao;
 
     /*
@@ -77,6 +81,21 @@ public class JdbcCustomerDao extends NamedParameterJdbcDaoSupport implements Cus
         final Customer customer = getJdbcTemplate().queryForObject(SQL, new CustomerMapper(), id);
 
         return customer;
+    }
+
+    //New DELETE API with id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.dao.CustomerDao#deleteCustomer(int)
+     */
+    @Override
+    public void deleteCustomer(final int id) {
+        final String SQL = BASE_DELETE_QUERY_SQL + " WHERE id = :id";
+
+        log.info("Deleting customer object for id = " + id);
+        final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getCustomer(id));
+        getNamedParameterJdbcTemplate().update(SQL, source);
     }
 
     /*

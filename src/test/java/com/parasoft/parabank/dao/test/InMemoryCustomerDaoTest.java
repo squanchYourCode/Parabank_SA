@@ -1,14 +1,17 @@
 package com.parasoft.parabank.dao.test;
 
+import com.parasoft.parabank.dao.CustomerDao;
+import com.parasoft.parabank.dao.InMemoryCustomerDao;
+import com.parasoft.parabank.domain.Customer;
+import com.parasoft.parabank.test.util.AbstractParaBankTest;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
-
-import java.util.*;
-
-import org.junit.*;
-
-import com.parasoft.parabank.dao.*;
-import com.parasoft.parabank.domain.*;
-import com.parasoft.parabank.test.util.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @req PAR-25
@@ -99,5 +102,126 @@ public class InMemoryCustomerDaoTest extends AbstractParaBankTest {
         customerDao.updateCustomer(customer);
         customer = customerDao.getCustomer(CUSTOMER1_ID);
         assertEquals("first last", customer.getFullName());
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteCustomer(int)
+     *
+     * @author dchacon
+     * @see InMemoryCustomerDao#deleteCustomer(int)
+     */
+    @Test(expected = NullPointerException.class)
+    public void testDeleteCustomer() throws Throwable {
+        // Given
+        List<Customer> customers = new ArrayList<Customer>(); // UTA: default value
+        Customer item = mock(Customer.class);
+        int getIdResult = 0; // UTA: default value
+        when(item.getId()).thenReturn(getIdResult);
+        customers.add(item);
+        InMemoryCustomerDao underTest = new InMemoryCustomerDao(customers);
+
+        // When
+        int id = 0; // UTA: default value
+        underTest.deleteCustomer(id);
+
+        // Then - assertion templates for this instance of InMemoryCustomerDao
+        ArrayList underTest_customers = null; // UTA: default value
+        // assertNotNull(underTest_customers);
+        assertEquals(0, underTest_customers.size());
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for getCustomer(int)
+     *
+     * @author dchacon
+     * @see InMemoryCustomerDao#getCustomer(int)
+     */
+    @Test
+    public void testGetCustomer2() throws Throwable {
+        // Given
+        InMemoryCustomerDao underTest = new InMemoryCustomerDao();
+
+        // When
+        int id = 0; // UTA: default value
+        Customer result = underTest.getCustomer(id);
+
+        // Then
+        // assertNotNull(result);
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for getCustomer(String, String)
+     *
+     * @author dchacon
+     * @see InMemoryCustomerDao#getCustomer(String, String)
+     */
+    @Test
+    public void testGetCustomer3() throws Throwable {
+        // Given
+        List<Customer> customers = new ArrayList<Customer>(); // UTA: default value
+        Customer item = mock(Customer.class);
+        customers.add(item);
+        InMemoryCustomerDao underTest = new InMemoryCustomerDao(customers);
+
+        // When
+        String username = ""; // UTA: default value
+        String password = ""; // UTA: default value
+        Customer result = underTest.getCustomer(username, password);
+
+        // Then
+        // assertNotNull(result);
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for getCustomer(String)
+     *
+     * @author dchacon
+     * @see InMemoryCustomerDao#getCustomer(String)
+     */
+    @Test
+    public void testGetCustomer4() throws Throwable {
+        // Given
+        List<Customer> customers = new ArrayList<Customer>(); // UTA: default value
+        Customer item = mock(Customer.class);
+        customers.add(item);
+        InMemoryCustomerDao underTest = new InMemoryCustomerDao(customers);
+
+        // When
+        String ssn = ""; // UTA: default value
+        Customer result = underTest.getCustomer(ssn);
+
+        // Then
+        // assertNotNull(result);
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for updateCustomer(Customer)
+     *
+     * @author dchacon
+     * @see InMemoryCustomerDao#updateCustomer(Customer)
+     */
+    @Test
+    public void testUpdateCustomer2() throws Throwable {
+        // Given
+        List<Customer> customers = new ArrayList<Customer>(); // UTA: default value
+        Customer item = mock(Customer.class);
+        customers.add(item);
+        InMemoryCustomerDao underTest = new InMemoryCustomerDao(customers);
+
+        // When
+        Customer customer = mockCustomer();
+        underTest.updateCustomer(customer);
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Helper method to generate and configure mock of Customer
+     */
+    private static Customer mockCustomer() throws Throwable {
+        Customer customer = mock(Customer.class);
+        int getIdResult = 0; // UTA: default value
+        when(customer.getId()).thenReturn(getIdResult);
+        return customer;
     }
 }

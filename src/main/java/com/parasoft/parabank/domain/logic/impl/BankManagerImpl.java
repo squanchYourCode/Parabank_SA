@@ -150,6 +150,17 @@ public class BankManagerImpl implements BankManager {
         return accountDao.getAccount(id);
     }
 
+    //New DELETE API using account id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.domain.logic.BankManager#deleteAccount(int)
+     */
+    @Override
+    public void deleteAccount(final int id) {
+        accountDao.deleteAccount(id);
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -168,6 +179,17 @@ public class BankManagerImpl implements BankManager {
     @Override
     public Customer getCustomer(final int id) {
         return customerDao.getCustomer(id);
+    }
+
+    //New DELETE API using customer id
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.parasoft.parabank.domain.logic.BankManager#getCustomer(int)
+     */
+    @Override
+    public void deleteCustomer(final int id) {
+        customerDao.deleteCustomer(id);
     }
 
     /*

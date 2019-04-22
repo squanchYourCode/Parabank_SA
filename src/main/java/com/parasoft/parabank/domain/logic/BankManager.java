@@ -18,6 +18,15 @@ public interface BankManager {
      */
     Customer getCustomer(int id);
 
+    //New DELETE API with id
+    /**
+     * Delete a specific bank customer by id
+     *
+     * @param id the customer id to retrieve
+     * @return Customer object representing the bank customer
+     */
+    void deleteCustomer(int id);
+
     /**
      * Retrieve a specific bank customer by username and password
      * Used by the login mechanism
@@ -163,6 +172,14 @@ public interface BankManager {
      */
     int createAccount(Account account, int fromAccountId);
 
+    //New DELETE API using account id
+    /**
+     * Delete account from table
+     *
+     *@param accountId the account id to delete from
+     */
+    void deleteAccount(int accountId);
+
     /**
      * Retrieve a specific account transaction by id
      *
@@ -174,7 +191,7 @@ public interface BankManager {
     /**
      * Retrieve all transactions for a given account
      *
-     * @param accountId the account id to lookup
+     * @param account the account id to lookup
      * @return list of transactions for the given account
      */
     List<Transaction> getTransactionsForAccount(Account account);

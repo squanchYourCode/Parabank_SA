@@ -1,21 +1,23 @@
 package com.parasoft.parabank.dao.jdbc;
 
+import com.parasoft.parabank.dao.PositionDao;
+import com.parasoft.parabank.dao.jdbc.internal.StockDataInserter;
+import com.parasoft.parabank.domain.HistoryPoint;
+import com.parasoft.parabank.domain.Position;
+import com.parasoft.parabank.service.ParaBankServiceImplTest;
+import com.parasoft.parabank.test.util.AbstractParaBankDataSourceTest;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
-
-import java.math.*;
-import java.util.*;
-
-import javax.annotation.*;
-
-import org.junit.*;
-import org.slf4j.*;
-import org.springframework.dao.*;
-
-import com.parasoft.parabank.dao.*;
-import com.parasoft.parabank.dao.jdbc.internal.*;
-import com.parasoft.parabank.domain.*;
-import com.parasoft.parabank.service.*;
-import com.parasoft.parabank.test.util.*;
 
 /**
  * @req PAR-16
@@ -166,4 +168,5 @@ public class JdbcPositionDaoTest extends AbstractParaBankDataSourceTest {
         final Position updatedPosition = positionDao.getPosition(positionId);
         assertEquals(position, updatedPosition);
     }
+
 }

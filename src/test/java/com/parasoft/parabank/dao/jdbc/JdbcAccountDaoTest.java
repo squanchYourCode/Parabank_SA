@@ -1,20 +1,18 @@
 package com.parasoft.parabank.dao.jdbc;
 
+import com.parasoft.parabank.dao.AccountDao;
+import com.parasoft.parabank.domain.Account;
+import com.parasoft.parabank.domain.Account.AccountType;
+import com.parasoft.parabank.test.util.AbstractParaBankDataSourceTest;
+import org.junit.Test;
+import org.springframework.dao.DataAccessException;
+import org.springframework.test.annotation.Rollback;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.List;
+
 import static org.junit.Assert.*;
-
-import java.math.*;
-import java.util.*;
-
-import javax.annotation.*;
-
-import org.junit.*;
-import org.springframework.dao.*;
-import org.springframework.test.annotation.*;
-
-import com.parasoft.parabank.dao.*;
-import com.parasoft.parabank.domain.*;
-import com.parasoft.parabank.domain.Account.*;
-import com.parasoft.parabank.test.util.*;
 
 /**
  * @req PAR-11
@@ -109,4 +107,22 @@ public class JdbcAccountDaoTest extends AbstractParaBankDataSourceTest {
         assertFalse(this.account.equals(updatedAccount));
         assertEquals(account, updatedAccount);
     }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteAccount(int)
+     *
+     * @author dchacon
+     * @see JdbcAccountDao#deleteAccount(int)
+     * still needs some adjustments
+     */
+    @Test(expected = NullPointerException.class)
+public void testDeleteAccount() throws Throwable {
+    // Given
+    JdbcAccountDao underTest = new JdbcAccountDao();
+
+    // When
+    int id = 0; // UTA: default value
+    underTest.deleteAccount(id);
+
+}
 }
