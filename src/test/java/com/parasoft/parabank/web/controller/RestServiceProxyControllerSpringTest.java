@@ -8,6 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,6 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,8 +78,11 @@ public class RestServiceProxyControllerSpringTest
         List<Account> accounts = bankManager.getAccountsForCustomer(customer);
         assertNotNull(accounts);
         assertFalse(accounts.isEmpty());
-        mockMvc.perform(get("/bank/customers/" + customerId + "/accounts").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(accounts.size())));
+        ResultActions result = mockMvc.perform(get("/bank/v1/customers/" + customerId + "/accounts").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(accounts.size())));
+
+        // Then - assertions for response content type
+        result.andExpect(content().contentTypeCompatibleWith("application/json"));
     }
 
     @Test
@@ -85,7 +90,7 @@ public class RestServiceProxyControllerSpringTest
         throws Exception
     {
         mockMvc
-            .perform(get("/bank/accounts/12456").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+            .perform(get("/bank/v1/accounts/12456").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$.balance", is(10.45))).andExpect(jsonPath("$.customerId", is(customerId)))
             .andExpect(jsonPath("$.type", is("CHECKING")));
     }
@@ -98,8 +103,11 @@ public class RestServiceProxyControllerSpringTest
         assertNotNull(account);
         List<Transaction> transactions = bankManager.getTransactionsForAccount(account);
         assertNotNull(transactions);
-        mockMvc.perform(get("/bank/accounts/12456/transactions").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(transactions.size())));
+        ResultActions result = mockMvc.perform(get("/bank/v1/accounts/12456/transactions").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(transactions.size())));
+
+        // Then - assertions for response content type
+        result.andExpect(content().contentTypeCompatibleWith("application/json"));
     }
 
     @Test
@@ -107,20 +115,26 @@ public class RestServiceProxyControllerSpringTest
         throws Exception
     {
         // perform a transaction (i.e. transfer 10 from account 12567 to 12456)
-        mockMvc.perform(post("/bank/transfer").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("fromAccountId", "12567")
+        mockMvc.perform(post("/bank/v1/transfer").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("fromAccountId", "12567")
             .param("toAccountId", "12456").param("amount", "10.00").content("").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
         // GET for transactions should return the transfer from the POST
         mockMvc
-            .perform(get("/bank/accounts/12567/transactions/month/All/type/All").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
+            .perform(get("/bank/v1/accounts/12567/transactions/month/All/type/All").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].amount", is(10.0)))
             .andExpect(jsonPath("$[0].description", is("Funds Transfer Sent"))).andExpect(jsonPath("$[0].type", is("Debit")));
 
         // GET for transactions of type 'Credit' should return empty since
         // transfer is a 'Debit' transaction
-        mockMvc.perform(get("/bank/accounts/12567/transactions/month/All/type/Credit").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
+        ResultActions result = mockMvc.perform(get("/bank/v1/accounts/12567/transactions/month/All/type/Credit").with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
+
+        // Then - assertions for response content type
+        result.andExpect(content().contentTypeCompatibleWith("application/json"));
+
+        // Then - assertions for HTTP response code
+        result.andExpect(status().isOk());
     }
 
     @Test
@@ -128,7 +142,7 @@ public class RestServiceProxyControllerSpringTest
         throws Exception
     {
         mockMvc
-            .perform(post("/bank/createAccount").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("customerId", "" + customerId)
+            .perform(post("/bank/v1/createAccount").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("customerId", "" + customerId)
                 .param("newAccountType", "0").param("fromAccountId", "13122").content("").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$.balance", is(0))).andExpect(jsonPath("$.customerId", is(customerId)))
             .andExpect(jsonPath("$.type", is("CHECKING")));
@@ -139,7 +153,7 @@ public class RestServiceProxyControllerSpringTest
         throws Exception
     {
         mockMvc
-            .perform(post("/bank/requestLoan").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("customerId", "" + customerId)
+            .perform(post("/bank/v1/requestLoan").with(createUserToken()).contentType(MediaType.APPLICATION_JSON).param("customerId", "" + customerId)
                 .param("amount", "1000").param("downPayment", "200").param("fromAccountId", "13122").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$.approved", is(true)));
     }
@@ -150,8 +164,11 @@ public class RestServiceProxyControllerSpringTest
     {
         int accountId = 12567;
         Transaction deposit = bankManager.deposit(accountId, BigDecimal.valueOf(1000.00), "Funds Transfer Received");
-        mockMvc.perform(get("/bank/transactions/" + deposit.getId()).with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(deposit.getId())));
+        ResultActions result = mockMvc.perform(get("/bank/v1/transactions/" + deposit.getId()).with(createUserToken()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(deposit.getId())));
+
+        // Then - assertions for response content type
+        result.andExpect(content().contentTypeCompatibleWith("application/json"));
     }
 
     @Test
@@ -162,7 +179,7 @@ public class RestServiceProxyControllerSpringTest
         BigDecimal amount = new BigDecimal(2000);
         Transaction deposit = bankManager.deposit(accountId, amount, "Funds Transfer Received");
         mockMvc
-            .perform(get("/bank/accounts/" + accountId + "/transactions/amount/" + amount).with(createUserToken())
+            .perform(get("/bank/v1/accounts/" + accountId + "/transactions/amount/" + amount).with(createUserToken())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$.[?(@.id == '" + deposit.getId() + "')]", hasSize(1)));
     }
@@ -176,7 +193,7 @@ public class RestServiceProxyControllerSpringTest
         String date = TransactionCriteria.DATE_FORMATTER.get().format(new Date());
         Transaction deposit = bankManager.deposit(accountId, amount, "Funds Transfer Received");
         mockMvc
-            .perform(get("/bank/accounts/" + accountId + "/transactions/onDate/" + date).with(createUserToken())
+            .perform(get("/bank/v1/accounts/" + accountId + "/transactions/onDate/" + date).with(createUserToken())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(greaterThan(0))))
             .andExpect(jsonPath("$.[?(@.id == '" + deposit.getId() + "')]", hasSize(1)));

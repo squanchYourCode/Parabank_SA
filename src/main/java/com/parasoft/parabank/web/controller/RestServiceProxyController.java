@@ -83,7 +83,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         this.context = servletContext;
     }
 
-    @RequestMapping(value = "bank/customers/{id}/accounts", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/customers/{id}/accounts", method = RequestMethod.GET, produces = "application/json")
     public List<Account> getAccounts(@PathVariable(value = "id") Integer id) throws Exception {
         authenticate();
         List<Account> accounts;// = new ArrayList<Account>();
@@ -104,7 +104,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return accounts;
     }
 
-    @RequestMapping(value = "bank/accounts/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{id}", method = RequestMethod.GET, produces = "application/json")
     public Account getAccount(@PathVariable(value = "id") Integer id) throws Exception {
         authenticate();
         String accessMode = null;
@@ -121,7 +121,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return account;
     }
 
-    @RequestMapping(value = "bank/accounts/{id}/transactions", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{id}/transactions", method = RequestMethod.GET, produces = "application/json")
     public List<Transaction> getTransactions(@PathVariable(value = "id") Integer id) throws Exception {
         authenticate();
         String accessMode = null;
@@ -139,7 +139,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return transactions;
     }
 
-    @RequestMapping(value = "bank/accounts/{id}/transactions/month/{month}/type/{type}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{id}/transactions/month/{month}/type/{type}", method = RequestMethod.GET, produces = "application/json")
     public List<Transaction> getTransactionsByMonthAndType(@PathVariable(value = "id") Integer id,
             @PathVariable(value = "month") String month, @PathVariable(value = "type") String type) throws Exception {
         authenticate();
@@ -162,7 +162,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return transactions;
     }
 
-    @RequestMapping(value = "bank/createAccount", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "bank/v1/createAccount", method = RequestMethod.POST, produces = "application/json")
     public Account createAccount(@RequestParam("customerId") Integer customerId,
             @RequestParam("newAccountType") Integer newAccountType,
             @RequestParam("fromAccountId") Integer fromAccountId) throws Exception {
@@ -185,7 +185,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return newAccount;
     }
 
-    @RequestMapping(value = "bank/transfer", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "bank/v1/transfer", method = RequestMethod.POST, produces = "application/json")
     public String transfer(@RequestParam("fromAccountId") Integer fromAccountId,
             @RequestParam("toAccountId") Integer toAccountId, @RequestParam("amount") BigDecimal amount)
             throws Exception {
@@ -204,7 +204,7 @@ public class RestServiceProxyController extends AbstractBankController implement
                 + toAccountId;
     }
 
-    @RequestMapping(value = "bank/requestLoan", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "bank/v1/requestLoan", method = RequestMethod.POST, produces = "application/json")
     public LoanResponse requestLoan(@RequestParam("customerId") Integer customerId,
             @RequestParam("amount") BigDecimal amount, @RequestParam("downPayment") BigDecimal downPayment,
             @RequestParam("fromAccountId") Integer fromAccountId) throws Exception {
@@ -223,7 +223,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         return loanResponse;
     }
 
-    @RequestMapping(value = "bank/accounts/{accountId}/transactions/onDate/{onDate}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{accountId}/transactions/onDate/{onDate}", method = RequestMethod.GET, produces = "application/json")
     public List<Transaction> getTransactionsOnDate(@PathVariable(value = "accountId") Integer accountId,
             @PathVariable(value = "onDate") String onDate) throws Exception {
         authenticate();
@@ -243,7 +243,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         }
     }
 
-    @RequestMapping(value = "bank/accounts/{accountId}/transactions/fromDate/{fromDate}/toDate/{toDate}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{accountId}/transactions/fromDate/{fromDate}/toDate/{toDate}", method = RequestMethod.GET, produces = "application/json")
     public List<Transaction> getTransactionsByToFromDate(@PathVariable(value = "accountId") Integer accountId,
             @PathVariable(value = "fromDate") String fromDate, @PathVariable(value = "toDate") String toDate)
             throws Exception {
@@ -265,7 +265,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         }
     }
 
-    @RequestMapping(value = "bank/accounts/{accountId}/transactions/amount/{amount}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/accounts/{accountId}/transactions/amount/{amount}", method = RequestMethod.GET, produces = "application/json")
     public List<Transaction> getTransactionsByAmount(@PathVariable(value = "accountId") Integer accountId,
             @PathVariable(value = "amount") BigDecimal amount) throws Exception {
         authenticate();
@@ -285,7 +285,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         }
     }
     
-    @RequestMapping(value = "bank/swagger.yaml")
+    @RequestMapping(value = "bank/v1/swagger.yaml")
     public ResponseEntity<String> getSwagger(HttpServletRequest request) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResourceAsStream("/WEB-INF/swagger.yaml")))) {
             String host = request.getServerName() + ':' + request.getServerPort();
@@ -296,7 +296,7 @@ public class RestServiceProxyController extends AbstractBankController implement
         }
     }
 
-    @RequestMapping(value = "bank/transactions/{transactionId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "bank/v1/transactions/{transactionId}", method = RequestMethod.GET, produces = "application/json")
     public Transaction getTransaction(@PathVariable(value = "transactionId") Integer transactionId) throws Exception {
         authenticate();
         String accessMode = null;
