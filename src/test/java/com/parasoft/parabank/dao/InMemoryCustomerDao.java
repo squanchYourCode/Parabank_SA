@@ -32,13 +32,17 @@ public class InMemoryCustomerDao implements CustomerDao {
 
     //New DELETE API using id
     @Override
-    public void deleteCustomer(int id) {
+    public boolean deleteCustomer(int id) {
+        boolean result = false;
         for (Customer customer : customers) {
             if (customer.getId() == id) {
                 customers.remove(customer);
+                result = true;
                 break;
             }
+
         }
+        return result;
     }
 
     @Override

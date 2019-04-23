@@ -76,11 +76,18 @@ public class JdbcCustomerDao extends NamedParameterJdbcDaoSupport implements Cus
     @Override
     public Customer getCustomer(final int id) {
         final String SQL = BASE_QUERY_SQL + " WHERE id = ?";
+        try {
+            log.info("Getting customer object for id = " + id);
+            final Customer customer = getJdbcTemplate().queryForObject(SQL, new CustomerMapper(), id);
 
-        log.info("Getting customer object for id = " + id);
-        final Customer customer = getJdbcTemplate().queryForObject(SQL, new CustomerMapper(), id);
+            return customer;
+        }
+        catch(Exception e){
+            log.info("Customer doesn't exist.");
+            return null;
+        }
 
-        return customer;
+
     }
 
     //New DELETE API with id
@@ -90,12 +97,23 @@ public class JdbcCustomerDao extends NamedParameterJdbcDaoSupport implements Cus
      * @see com.parasoft.parabank.dao.CustomerDao#deleteCustomer(int)
      */
     @Override
-    public void deleteCustomer(final int id) {
+    public boolean deleteCustomer(final int id) {
+        boolean result = false;
+        Customer cust = getCustomer(id);
         final String SQL = BASE_DELETE_QUERY_SQL + " WHERE id = :id";
-
-        log.info("Deleting customer object for id = " + id);
-        final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getCustomer(id));
-        getNamedParameterJdbcTemplate().update(SQL, source);
+        try {
+            if (cust.getId() > 0) {
+                log.info("Deleting customer object for id = " + id);
+                final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getCustomer(id));
+                getNamedParameterJdbcTemplate().update(SQL, source);
+                result = true;
+            }
+        }
+        catch(Exception e){
+            log.info("Customer with " + id + " cannot be found.");
+            return result;
+        }
+        return result;
     }
 
     /*

@@ -22,7 +22,7 @@ public interface CustomerDao {
 	 * @param id the customer id to retrieve
 	 * @return Customer object representing the bank customer
 	 */
-	void deleteCustomer(int id);
+	boolean deleteCustomer(int id);
 
 	/**
 	 * Retrieve a specific bank customer by username and password

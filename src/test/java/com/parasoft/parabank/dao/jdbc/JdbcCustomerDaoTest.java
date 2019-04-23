@@ -96,7 +96,8 @@ public class JdbcCustomerDaoTest extends AbstractParaBankDataSourceTest {
 
         try {
             customer = customerDao.getCustomer(-1);
-            fail("did not throw expected DataAccessException");
+            //fail("did not throw expected DataAccessException");
+            assertNull(customer);
         } catch (final DataAccessException e) {
         }
     }
@@ -170,14 +171,33 @@ public class JdbcCustomerDaoTest extends AbstractParaBankDataSourceTest {
      * @see JdbcCustomerDao#deleteCustomer(int)
      * still needs some modifications
      */
-    @Test(expected = NullPointerException.class)
+    @Test//(expected = NullPointerException.class)
     public void testDeleteCustomer() throws Throwable {
         // Given
         JdbcCustomerDao underTest = new JdbcCustomerDao();
 
+        final int id = customerDao.createCustomer(customer);
+        assertTrue(customerDao.deleteCustomer(id));
         // When
-        int id = 12434; // UTA: default value
-        underTest.deleteCustomer(id);
+        //int id = 12434; // UTA: default value
+        //underTest.deleteCustomer(id);
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test cloned from
+     * com.parasoft.parabank.dao.jdbc.JdbcCustomerDaoTest#testDeleteCustomer()
+     *
+     * @author bmcmullin
+     * @see JdbcCustomerDao#deleteCustomer(int)
+     */
+    @Test
+    public void testDeleteCustomer_NonExCustomer() throws Throwable {
+        // Given
+
+        final int id = 0;
+        assertFalse(customerDao.deleteCustomer(id));
+
 
     }
 }
