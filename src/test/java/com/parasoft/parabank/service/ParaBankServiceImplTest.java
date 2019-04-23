@@ -8,6 +8,7 @@ import java.util.*;
 import javax.annotation.*;
 
 import org.junit.*;
+import org.mockito.Mock;
 import org.slf4j.*;
 import org.springframework.test.annotation.*;
 import org.springframework.transaction.annotation.*;
@@ -175,8 +176,9 @@ public class ParaBankServiceImplTest extends AbstractParaBankDataSourceTest {
 
         try {
             paraBankService.getAccounts(-1);
-            fail("Did not throw expected ParaBankServiceException");
-        } catch (final ParaBankServiceException e) {
+            //fail("Did not throw expected ParaBankServiceException");
+            fail("Did not throw expected NullpointerException");
+        } catch (final NullPointerException e) {
         }
     }
 
@@ -187,8 +189,9 @@ public class ParaBankServiceImplTest extends AbstractParaBankDataSourceTest {
         assertEquals("John Smith", customer.getFullName());
 
         try {
-            paraBankService.getCustomer(-1);
-            fail("Did not throw expected ParaBankServiceException");
+            assertNull(paraBankService.getCustomer(-1));
+
+            //fail("Did not throw expected ParaBankServiceException");
         } catch (final ParaBankServiceException e) {
         }
     }
@@ -237,8 +240,8 @@ public class ParaBankServiceImplTest extends AbstractParaBankDataSourceTest {
 
         try {
             paraBankService.getPositions(-1);
-            fail("Did not throw expected ParaBankServiceException");
-        } catch (final ParaBankServiceException e) {
+            fail("Did not throw expected NullpointerException");
+        } catch (final NullPointerException e) {
         }
     }
 
@@ -322,5 +325,52 @@ public class ParaBankServiceImplTest extends AbstractParaBankDataSourceTest {
             fail("Did not throw expected ParaBankServiceException");
         } catch (final ParaBankServiceException e) {
         }
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteCustomer(int)
+     *
+     * @author bmcmullin
+     * @see ParaBankServiceImpl#deleteCustomer(int)
+     */
+    @Test
+    public void testDeleteCustomer() throws Throwable {
+        // Given
+        //ParaBankServiceImpl underTest = new ParaBankServiceImpl();
+        final Customer customer = paraBankService.getCustomer(CUSTOMER_ID);
+        assertEquals(CUSTOMER_ID, customer.getId());
+
+        boolean result = paraBankService.deleteCustomer(customer.getId());
+        assertTrue(result);
+
+        // Then - assertions for result of method deleteCustomer(int)
+
+        // When
+        //int customerId = 0; // UTA: default value
+        //underTest.deleteCustomer(customerId);
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test cloned from
+     * com.parasoft.parabank.service.ParaBankServiceImplTest#testDeleteCustomer()
+     *
+     * @author bmcmullin
+     * @see ParaBankServiceImpl#deleteCustomer(int)
+     */
+    @Test
+    public void testDeleteCustomer_NonExCustomer() throws Throwable {
+        // Given
+        //ParaBankServiceImpl underTest = new ParaBankServiceImpl();
+        //paraBankService.createAccount();
+
+            //final Customer customer = paraBankService.getCustomer(-1);
+
+            assertFalse(paraBankService.deleteCustomer(-1));
+
+        // When
+        //int customerId = 0; // UTA: default value
+        //underTest.deleteCustomer(customerId);
+
     }
 }

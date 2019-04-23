@@ -376,4 +376,50 @@ public class BankManagerImplTest extends AbstractParaBankTest {
         assertEquals(AMOUNT2.floatValue(), transaction.getAmount().floatValue(), 0.0001f);
         assertEquals(TRANSACTION_MESSAGE, transaction.getDescription());
     }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteAccount(int)
+     *
+     * @author bmcmullin
+     * @see BankManagerImpl#deleteAccount(int)
+     */
+    @Test
+    public void testDeleteAccount() throws Throwable {
+        final Account account1 = bankManager.getAccount(1);
+        List<Transaction> transactions = bankManager.getTransactionsForAccount(account1);
+
+        Account account2 = new Account();
+        account2.setBalance(BigDecimal.ZERO);
+        final int id = bankManager.createAccount(account2, account1.getId());
+
+        bankManager.deleteAccount(id);
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteCustomer(int)
+     *
+     * @author bmcmullin
+     * @see BankManagerImpl#deleteCustomer(int)
+     */
+    @Test
+    public void testDeleteCustomer() throws Throwable {
+        final int id = bankManager.createCustomer(new Customer());
+        assertTrue(bankManager.deleteCustomer(id));
+
+    }
+
+    /**
+     * Parasoft Jtest UTA: Test cloned from
+     * com.parasoft.parabank.domain.logic.impl.BankManagerImplTest#testDeleteCustomer()
+     *
+     * @author bmcmullin
+     * @see BankManagerImpl#deleteCustomer(int)
+     */
+    @Test
+    public void testDeleteCustomer_NonEx_Customer() throws Throwable {
+        final int id = 0;
+        assertFalse(bankManager.deleteCustomer(id));
+
+    }
 }

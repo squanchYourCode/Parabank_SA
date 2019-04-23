@@ -174,13 +174,10 @@ public class JdbcCustomerDaoTest extends AbstractParaBankDataSourceTest {
     @Test//(expected = NullPointerException.class)
     public void testDeleteCustomer() throws Throwable {
         // Given
-        JdbcCustomerDao underTest = new JdbcCustomerDao();
 
         final int id = customerDao.createCustomer(customer);
         assertTrue(customerDao.deleteCustomer(id));
-        // When
-        //int id = 12434; // UTA: default value
-        //underTest.deleteCustomer(id);
+
 
     }
 

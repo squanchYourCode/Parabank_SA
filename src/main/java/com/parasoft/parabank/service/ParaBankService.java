@@ -209,7 +209,7 @@ public interface ParaBankService extends ParaBankServiceConstants {
             ParaBankServiceConstants.CUSTOMERS })
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @WebResult(name = "customer", targetNamespace = ParaBankServiceConstants.TNS)
-    void deleteCustomer(
+    boolean deleteCustomer(
             @ApiParam(value = CUSTOMER_ID_DESC, required = true) @PathParam(CUSTOMER_ID) @WebParam(name = CUSTOMER_ID, targetNamespace = ParaBankServiceConstants.TNS) int customerId)
             throws ParaBankServiceException;
 

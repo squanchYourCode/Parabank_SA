@@ -194,11 +194,17 @@ public class ParaBankServiceImpl implements ParaBankService, AdminManagerAware, 
      * @see com.parasoft.parabank.service.ParaBankService#getCustomer(int)
      */
     @Override
-    public void deleteCustomer(final int customerId) throws ParaBankServiceException {
+    public boolean deleteCustomer(final int customerId) throws ParaBankServiceException {
         try {
-            List<Account> account = getAccounts(customerId); // get account object associated with customer_id
+            //List<Account> account = getAccounts(customerId); // get account object associated with customer_id
             //bankManager.deleteAccount(account.getId()); //need to delete from Account table before removing from Customer
-            bankManager.deleteCustomer(customerId);
+            if(bankManager.deleteCustomer(customerId)) {
+                return true;
+            }
+            else{
+                return false;
+            }
+
         } catch (final DataAccessException e) {
             log.error("DataAccessException caught :", e);
             throw new ParaBankServiceException("Could not find customer #" + customerId, e);

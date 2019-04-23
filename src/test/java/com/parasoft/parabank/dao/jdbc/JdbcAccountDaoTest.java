@@ -6,6 +6,7 @@ import com.parasoft.parabank.domain.Account.AccountType;
 import com.parasoft.parabank.test.util.AbstractParaBankDataSourceTest;
 import org.junit.Test;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.Rollback;
 
 import javax.annotation.Resource;
@@ -115,14 +116,12 @@ public class JdbcAccountDaoTest extends AbstractParaBankDataSourceTest {
      * @see JdbcAccountDao#deleteAccount(int)
      * still needs some adjustments
      */
-    @Test(expected = NullPointerException.class)
-public void testDeleteAccount() throws Throwable {
-    // Given
-    JdbcAccountDao underTest = new JdbcAccountDao();
+    @Test
+public void testDeleteAccount(){
 
-    // When
-    int id = 0; // UTA: default value
-    underTest.deleteAccount(id);
+    final int id = accountDao.createAccount(account);
+    accountDao.deleteAccount(id);
+
 
 }
 }

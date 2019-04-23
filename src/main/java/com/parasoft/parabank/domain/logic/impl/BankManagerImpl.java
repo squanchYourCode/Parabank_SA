@@ -158,6 +158,7 @@ public class BankManagerImpl implements BankManager {
      */
     @Override
     public void deleteAccount(final int id) {
+
         accountDao.deleteAccount(id);
     }
 
@@ -188,8 +189,8 @@ public class BankManagerImpl implements BankManager {
      * @see com.parasoft.parabank.domain.logic.BankManager#getCustomer(int)
      */
     @Override
-    public void deleteCustomer(final int id) {
-        customerDao.deleteCustomer(id);
+    public boolean deleteCustomer(final int id) {
+        return customerDao.deleteCustomer(id);
     }
 
     /*
