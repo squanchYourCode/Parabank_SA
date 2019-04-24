@@ -1,14 +1,22 @@
 package com.parasoft.parabank.service;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.powermock.api.mockito.PowerMockito.doAnswer;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.math.*;
 import java.util.*;
 
 import javax.annotation.*;
 
+import com.parasoft.parabank.domain.logic.BankManager;
 import org.junit.*;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.slf4j.*;
 import org.springframework.test.annotation.*;
 import org.springframework.transaction.annotation.*;
@@ -373,4 +381,25 @@ public class ParaBankServiceImplTest extends AbstractParaBankDataSourceTest {
         //underTest.deleteCustomer(customerId);
 
     }
+
+    /**
+     * Parasoft Jtest UTA: Test for deleteAccount(int)
+     *
+     * @author dchacon
+     * @see ParaBankServiceImpl#deleteAccount(int)
+     */
+@Test
+public void testDeleteAccount() throws Throwable {
+    // Given
+    ParaBankServiceImpl underTest = new ParaBankServiceImpl();
+    BankManager bankManager = mock(BankManager.class);
+    underTest.setBankManager(bankManager);
+
+    // When
+    int accountId = 0;
+    underTest.deleteAccount(accountId);
+    assertNull(underTest.getAccount(0));
+
+}
+
 }

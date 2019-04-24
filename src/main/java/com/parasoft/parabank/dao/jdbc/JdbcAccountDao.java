@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.slf4j.*;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.*;
 
@@ -151,16 +152,22 @@ public class JdbcAccountDao extends NamedParameterJdbcDaoSupport implements Acco
      * @see com.parasoft.parabank.dao.AccountDao#deleteAccount(com.parasoft.parabank. domain.Account)
      */
     @Override
-    public void deleteAccount(final int id) {
-        final String SQL =
-                "DELETE FROM Account WHERE id = :id";
+    public boolean deleteAccount(final int id) {
+        try {
+            final String SQL =
+                    "DELETE FROM Account WHERE id = :id";
 
-        final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getAccount(id));
-        getNamedParameterJdbcTemplate().update(SQL, source);
-        // getJdbcTemplate().update(SQL, account.getCustomerId(),
-        // account.getIntType(), account.getBalance(),
-        // account.getId());
-        log.info("Deleted information for account with id = " + id);
+            final BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(getAccount(id));
+            getNamedParameterJdbcTemplate().update(SQL, source);
+            // getJdbcTemplate().update(SQL, account.getCustomerId(),
+            // account.getIntType(), account.getBalance(),
+            // account.getId());
+            log.info("Deleted information for account with id = " + id);
+            return true;
+        } catch (DataAccessException e) {
+            System.out.println("No Account to Delete");
+            return false;
+        }
     }
 
     //DELETE API using customer id, to eliminate all accounts associated with customer id
