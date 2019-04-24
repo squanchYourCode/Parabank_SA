@@ -117,11 +117,12 @@ public class JdbcAccountDaoTest extends AbstractParaBankDataSourceTest {
      * still needs some adjustments
      */
     @Test
-public void testDeleteAccount(){
+    public void testDeleteAccount(){
 
     final int id = accountDao.createAccount(account);
     accountDao.deleteAccount(id);
 
-
+    assertFalse(accountDao.deleteAccount(id));
 }
+
 }

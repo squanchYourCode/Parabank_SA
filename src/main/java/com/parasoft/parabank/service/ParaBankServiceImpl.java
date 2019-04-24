@@ -134,12 +134,12 @@ public class ParaBankServiceImpl implements ParaBankService, AdminManagerAware, 
      */
     @Override
     public void deleteAccount(final int accountId) throws ParaBankServiceException {
-        try {
+        //try {
             bankManager.deleteAccount(accountId);
-        } catch (final DataAccessException e) {
+        /*} catch (final DataAccessException e) {
             log.error("DataAccessException caught :", e);
             throw new ParaBankServiceException("Could not find account #" + accountId, e);
-        }
+        }*/
     }
 
     /*
